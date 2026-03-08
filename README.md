@@ -41,7 +41,7 @@ cd Pikka
 
 # Install dependencies
 pip install PyQt6 pillow piexif watchdog
-```
+
 
 ---
 
