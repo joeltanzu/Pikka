@@ -1,0 +1,19 @@
+# Claude
+CLAUDE.md
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment
+.env
+venv/
+.venv/
+
+# py2app
+build/
+dist/
