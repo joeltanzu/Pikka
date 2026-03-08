@@ -29,7 +29,7 @@ Pikka lets you drag a folder of photos into a visual grid, sort and reorder them
 - [PyQt6](https://pypi.org/project/PyQt6/)
 - [Pillow](https://pypi.org/project/Pillow/)
 - [piexif](https://pypi.org/project/piexif/)
-- [watchdog](https://pypi.org/project/watchdog/) *(optional — enables live folder watching)*
+- [watchdog](https://pypi.org/project/watchdog/)
 
 ---
 
