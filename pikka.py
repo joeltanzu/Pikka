@@ -524,8 +524,33 @@ class GalleryWidget(QWidget):
             self._rebuild_pending = True
             QTimer.singleShot(0, self._rebuild)
 
+    def _reorder_cards_live(self):
+        """Reorder existing cards in the grid without creating or destroying any widgets.
+        Called instead of _rebuild() while a drag is in progress, so the dragged
+        card's C++ object is never freed under the native macOS drag session."""
+        card_map = {card._path: card for card in self._cards}
+        cols = self._cols()
+        for card in self._cards:
+            self._layout.removeWidget(card)
+        new_cards = []
+        for i, path in enumerate(self._photos):
+            card = card_map.get(path)
+            if card is None:
+                continue
+            card._index = i
+            row, col = divmod(i, cols)
+            self._layout.addWidget(card, row, col)
+            new_cards.append(card)
+        self._cards = new_cards
+
     def _rebuild(self):
         self._rebuild_pending = False
+        # During an active drag, never destroy widgets — the native macOS drag
+        # session still references the dragged card's C++ object.  Reorder in
+        # place instead and let end_live_drag() trigger the full rebuild.
+        if self._live_drag_path is not None:
+            self._reorder_cards_live()
+            return
         # Safely detach old cards
         for card in self._cards:
             card.hide()
