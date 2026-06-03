@@ -2,33 +2,49 @@
   <img src="assets/icon.png" width="128" alt="Pikka icon" />
 </p>
 
-<h1 align="center">Pikka</h1>
+# Pikka
 
-<p align="center">A minimal, dark-themed macOS desktop app for sorting and batch-renaming photos — built as a single Python file using PyQt6.</p>
+> A minimal macOS photo-sorting app for visually ordering images and batch-renaming them in one clean pass.
 
----
-
-![Screenshot](assets/screenshot.png)
-
----
-
-## Overview
-
-Pikka lets you drag a folder of photos into a visual grid, sort and reorder them, then rename them in one shot with a sequential prefix (`photo_001.jpg`, `photo_002.jpg`, …). Non-JPEG formats can be converted to JPEG on the fly during rename.
-
-**Supported formats:** JPG, PNG, HEIC, WEBP, TIFF, BMP, GIF
-
-**Key features:**
-
-- Thumbnail grid with drag-to-reorder (live card shuffling as you drag)
-- Sort by Name, Date Modified, Date Taken (EXIF), or File Size — ascending or descending
-- Batch rename with sequential numbering and a configurable prefix
-- Optional JPEG conversion for PNG, HEIC, WEBP, TIFF, BMP, and GIF files
-- Rename confirmation dialog showing every old → new filename before committing
-- Folder watching: a banner appears when files change on disk while the app is open
-- Optional deletion of original files after conversion
+![version](https://img.shields.io/badge/version-1.0.0-00d4aa?style=flat-square)
+![platform](https://img.shields.io/badge/platform-macOS-lightgrey?style=flat-square)
+![python](https://img.shields.io/badge/python-3.9+-blue?style=flat-square)
+![ui](https://img.shields.io/badge/ui-PyQt6-f0a020?style=flat-square)
 
 ---
+
+![Pikka screenshot](assets/screenshot.png)
+
+## What it does
+
+Pikka helps you take a messy folder of photos, see the images as a grid, place them in the order you actually want, and rename them with a clean numbered sequence.
+
+It is intentionally small and practical: load a folder, sort or drag the images into place, preview every rename, then commit the batch.
+
+## Features
+
+- Drag a folder onto the app or open one from the header
+- Thumbnail grid with live drag-to-reorder behavior
+- Sort by file name, date modified, EXIF date taken, or file size
+- Toggle ascending or descending sort order
+- Batch rename with a configurable prefix and sequential numbering
+- Confirmation dialog showing every old filename and new filename before changes are applied
+- Optional JPEG conversion for non-JPEG images
+- Optional deletion of originals after conversion
+- Folder watcher that warns when files change on disk while the app is open
+- Dark, focused interface designed around image review rather than file-browser clutter
+
+## Supported formats
+
+| Format | Notes |
+|---|---|
+| JPG / JPEG | Supported directly |
+| PNG | Can be converted to JPEG |
+| HEIC | Can be converted to JPEG when Pillow supports the local codec path |
+| WEBP | Can be converted to JPEG |
+| TIFF / TIF | Can be converted to JPEG |
+| BMP | Can be converted to JPEG |
+| GIF | Can be converted to JPEG |
 
 ## Requirements
 
@@ -37,61 +53,72 @@ Pikka lets you drag a folder of photos into a visual grid, sort and reorder them
 - [PyQt6](https://pypi.org/project/PyQt6/)
 - [Pillow](https://pypi.org/project/Pillow/)
 - [piexif](https://pypi.org/project/piexif/)
-- [watchdog](https://pypi.org/project/watchdog/) 
+- [watchdog](https://pypi.org/project/watchdog/)
 
----
-
-## Installation
+## Getting started
 
 ```bash
-# Clone the repo
 git clone https://github.com/joeltanzu/Pikka.git
 cd Pikka
 
-# Install dependencies
-pip install PyQt6 pillow piexif watchdog
+python3 -m pip install PyQt6 pillow piexif watchdog
+python3 pikka.py
 ```
 
----
-
-## Usage
+You can also launch Pikka with a folder already loaded:
 
 ```bash
-# Launch the app
-python3 pikka.py
-
-# Open with a folder pre-loaded
 python3 pikka.py /path/to/photos
 ```
 
-1. **Open a folder** — drag a folder onto the window, or click the folder button in the header.
-2. **Sort** — use the sort toolbar to order by Name, Date Modified, Date Taken, or Size. Toggle ascending/descending with the arrow button.
-3. **Reorder** — drag cards within the grid to set a custom order before renaming.
-4. **Configure rename** — set a prefix in the bottom bar (default: `photo_`). Enable JPEG conversion for any non-JPEG formats shown in the conversion panel.
-5. **Rename** — click **Rename**. A confirmation dialog lists every old → new filename. Confirm to apply.
+## Workflow
 
----
+1. **Open a folder** by dropping it onto the window or using the folder button.
+2. **Sort the grid** by name, modified date, date taken, or size.
+3. **Drag images** into a custom order when the automatic sort is not enough.
+4. **Set a prefix** such as `photo_`, `trip_`, or `listing_`.
+5. **Choose conversion options** for non-JPEG files if you want a JPEG-only output set.
+6. **Review the rename preview** before committing the batch.
+7. **Rename** and let Pikka apply the sequence.
 
-## Running the app bundle (macOS Gatekeeper)
+## Building the app bundle
 
-Pikka is unsigned, so macOS will block it on first launch. To open it:
+Pikka includes a py2app configuration:
 
-**Option 1 — Right-click open (recommended)**
-1. In Finder, right-click `Pikka.app`
-2. Select **Open**
-3. Click **Open** in the dialog that appears
-4. macOS will remember your choice — subsequent launches work normally
+```bash
+python3 setup.py py2app
+open dist/Pikka.app
+```
 
-**Option 2 — Remove the quarantine flag**
+For a lightweight development bundle:
+
+```bash
+python3 setup.py py2app --alias
+```
+
+## macOS Gatekeeper
+
+The local app bundle is unsigned, so macOS may block it the first time you open it.
+
+Recommended path:
+
+1. Right-click `Pikka.app` in Finder.
+2. Choose **Open**.
+3. Confirm **Open** in the system dialog.
+
+Alternatively, remove the quarantine flag:
+
 ```bash
 xattr -dr com.apple.quarantine dist/Pikka.app
 ```
-Then double-click to open as usual.
 
-> **Note:** This only applies to the built `.app` bundle (`dist/Pikka.app`). Running via `python3 pikka.py` directly is unaffected.
+## Built with
 
----
+- PyQt6 for the native desktop interface
+- Pillow and piexif for image handling and metadata-aware thumbnail work
+- watchdog for folder-change detection
+- py2app for macOS app bundling
 
 ## License
 
-MIT License.
+MIT. Small tool, sharp edge, use it well.
